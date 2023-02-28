@@ -12,6 +12,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "@clack/prompts": "0.6.1"
+  },
   "eslintConfig": {
     "extends": "./node_modules/standard/eslintrc.json"
   },
