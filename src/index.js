@@ -1,16 +1,18 @@
-import { select, outro, intro } from '@clack/prompts'
-import { COMMIT_TYPES } from './commit-types'
+import { outro, intro } from '@clack/prompts'
+import { trytm } from '@bdsqqq/try'
 
-intro('Wizard for the creation of commits by @evelasquez')
+import { error, log, warning } from './log'
+import { exitProgram } from './utils'
+import { getChangedFiles, getStagedFiles } from './git-cmd'
 
-const commitMessage = await select({
-  message: 'Commit message',
-  options: Object.entries(COMMIT_TYPES).map(([key, value]) => ({
-    value: key,
-    label: `${value.emoji} ${key} ${value.description}`
-  }))
-})
+intro(log(`Wizard for the creation of commits by ${warning('@evelasquez')}`))
 
-console.log(commitMessage)
+const [changedFiles, errorChangedFiles] = await trytm(getChangedFiles())
+const [stagedFiles, errorStagedFiles] = await trytm(getStagedFiles())
+
+// validate if there are errors
+if (errorChangedFiles ?? errorStagedFiles) {
+  exitProgram({ code: 1, message: error('Error: check that you are in a git repository') })
+}
 
 outro('Commit created successfully. Thanks for using the wizard!')
