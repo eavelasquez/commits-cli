@@ -1,6 +1,7 @@
 import { outro, intro, select, isCancel } from '@clack/prompts'
 import { trytm } from '@bdsqqq/try'
 
+import { COMMIT_TYPES } from './commit-types'
 import { addFiles, getChangedFiles, getStagedFiles } from './git-cmd'
 import { error, info, log, warning } from './log'
 import { exitProgram } from './utils'
@@ -30,6 +31,19 @@ if (changedFiles.length > 0 && stagedFiles.length === 0) {
   }
 
   await addFiles(files)
+}
+
+// select the type of commit
+const commitType = await select({
+  message: info('Select the type of commit'),
+  options: Object.entries(COMMIT_TYPES).map(([key, value]) => ({
+    value: key,
+    label: `${value.emoji} ${key.padEnd(7)} · ${value.description}`
+  }))
+})
+
+if (isCancel(commitType)) {
+  exitProgram({ message: info('No commit type selected, exiting the wizard') })
 }
 
 outro('Commit created successfully. Thanks for using the wizard!')
