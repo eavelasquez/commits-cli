@@ -15,12 +15,17 @@ export async function getStagedFiles () {
   return cleanStdout(stdout)
 }
 
+export async function addFiles ({ files = [] } = {}) {
+  const { stdout } = await execAsync(`git add ${files.join(' ')}`)
+  return cleanStdout(stdout)
+}
+
 export async function createCommit ({ commit } = {}) {
   const { stdout } = await execAsync(`git commit -m "${commit}"`)
   return cleanStdout(stdout)
 }
 
-export async function addFiles ({ files = [] } = {}) {
-  const { stdout } = await execAsync(`git add ${files.join(' ')}`)
+export async function pushCommit ({ branch } = {}) {
+  const { stdout } = await execAsync(`git push origin ${branch}`)
   return cleanStdout(stdout)
 }
