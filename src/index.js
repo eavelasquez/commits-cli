@@ -8,6 +8,7 @@ import { exitProgram } from './utils'
 
 intro(log(`Wizard for the creation of commits by ${warning('@evelasquez')}`))
 
+// get the changed files and the staged files in the repository
 const [changedFiles, errorChangedFiles] = await trytm(getChangedFiles())
 const [stagedFiles, errorStagedFiles] = await trytm(getStagedFiles())
 
@@ -99,9 +100,7 @@ const shouldContinue = await confirm({
   `
 })
 
-if (isCancel(shouldContinue)) {
-  exitProgram({ message: warning('The commit was not created, exiting the wizard') })
-}
+if (isCancel(shouldContinue)) exitProgram()
 
 await createCommit({ commit })
 
