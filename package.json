@@ -13,7 +13,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@clack/prompts": "0.6.1"
+    "@clack/prompts": "0.6.1",
+    "picocolors": "1.0.0"
   },
   "eslintConfig": {
     "extends": "./node_modules/standard/eslintrc.json"
