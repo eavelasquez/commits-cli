@@ -1,4 +1,4 @@
-import { outro, intro, select, isCancel } from '@clack/prompts'
+import { confirm, intro, isCancel, outro, select } from '@clack/prompts'
 import { trytm } from '@bdsqqq/try'
 
 import { addFiles, getChangedFiles, getStagedFiles } from './git-cmd'
@@ -68,6 +68,21 @@ const commitMessage = await select({
 
 if (isCancel(commitMessage)) {
   exitProgram({ message: info('No commit message entered, exiting the wizard') })
+}
+
+// Ask if it is a breaking change
+const { release } = COMMIT_TYPES[commitType]
+
+let breakingChange = false
+if (release) {
+  breakingChange = await confirm({
+    initialValue: false,
+    message: `${info('Is this a breaking change?')} ${warning('If yes, the commit will be released as a major version')}`
+  })
+
+  if (isCancel(breakingChange)) {
+    exitProgram({ message: info('No breaking change selected, exiting the wizard') })
+  }
 }
 
 outro('Commit created successfully. Thanks for using the wizard!')
