@@ -46,6 +46,8 @@ if (isCancel(commitType)) {
   exitProgram({ message: info('No commit type selected, exiting the wizard') })
 }
 
+// TODO: select the scope of the commit
+
 // Ask for the commit message
 const commitMessage = await select({
   message: info('Enter the commit message:'),
