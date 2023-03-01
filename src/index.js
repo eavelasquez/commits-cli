@@ -1,8 +1,8 @@
 import { outro, intro, select, isCancel } from '@clack/prompts'
 import { trytm } from '@bdsqqq/try'
 
-import { COMMIT_TYPES } from './commit-types'
 import { addFiles, getChangedFiles, getStagedFiles } from './git-cmd'
+import { COMMIT_TYPES } from './commit-types'
 import { error, info, log, warning } from './log'
 import { exitProgram } from './utils'
 
@@ -44,6 +44,28 @@ const commitType = await select({
 
 if (isCancel(commitType)) {
   exitProgram({ message: info('No commit type selected, exiting the wizard') })
+}
+
+// Ask for the commit message
+const commitMessage = await select({
+  message: info('Enter the commit message:'),
+  validate: (value) => {
+    if (value.length > 0) {
+      return error('The commit message cannot be empty')
+    }
+
+    if (value.length > 50) {
+      return error('The commit message cannot be greater than 50 characters')
+    }
+
+    if (value.includes(' ')) {
+      return error('The commit message cannot contain spaces')
+    }
+  }
+})
+
+if (isCancel(commitMessage)) {
+  exitProgram({ message: info('No commit message entered, exiting the wizard') })
 }
 
 outro('Commit created successfully. Thanks for using the wizard!')
