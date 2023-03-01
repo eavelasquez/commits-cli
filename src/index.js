@@ -1,9 +1,9 @@
 import { confirm, intro, isCancel, outro, select } from '@clack/prompts'
 import { trytm } from '@bdsqqq/try'
 
-import { addFiles, getChangedFiles, getStagedFiles } from './git-cmd'
+import { addFiles, createCommit, getChangedFiles, getStagedFiles } from './git-cmd'
 import { COMMIT_TYPES } from './commit-types'
-import { error, info, log, warning } from './log'
+import { error, info, log, success, warning } from './log'
 import { exitProgram } from './utils'
 
 intro(log(`Wizard for the creation of commits by ${warning('@evelasquez')}`))
@@ -71,7 +71,7 @@ if (isCancel(commitMessage)) {
 }
 
 // Ask if it is a breaking change
-const { release } = COMMIT_TYPES[commitType]
+const { emoji, release } = COMMIT_TYPES[commitType]
 
 let breakingChange = false
 if (release) {
@@ -85,4 +85,24 @@ if (release) {
   }
 }
 
-outro('Commit created successfully. Thanks for using the wizard!')
+// Ask if you want to continue with the commit
+const commit = breakingChange
+  ? `${emoji} ${commitType}: ${commitMessage} [breaking change]`
+  : `${emoji} ${commitType}: ${commitMessage}`
+
+const shouldContinue = await confirm({
+  initialValue: true,
+  message: `
+    ${info('The commit will be created with the following message:')}
+    ${success(commit)}
+    ${info('Do you want to continue?')}
+  `
+})
+
+if (isCancel(shouldContinue)) {
+  exitProgram({ message: warning('The commit was not created, exiting the wizard') })
+}
+
+await createCommit({ commit })
+
+outro(success('Commit created successfully. Thanks for using the wizard!'))
