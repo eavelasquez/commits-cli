@@ -2,6 +2,9 @@
   "name": "commits-cli",
   "version": "1.0.0",
   "description": "This is a cli app that helps write better commit messages.",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "type": "module",
   "bin": {
     "commits": "./src/bin.js"
@@ -18,10 +21,10 @@
   "license": "ISC",
   "devDependencies": {
     "commits": "file://.",
-    "standard": "^17.0.0"
+    "standard": "17.0.0"
   },
   "dependencies": {
-    "@bdsqqq/try": "^2.3.1",
+    "@bdsqqq/try": "2.3.1",
     "@clack/prompts": "0.6.1",
     "picocolors": "1.0.0"
   },
