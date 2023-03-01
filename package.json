@@ -1,17 +1,25 @@
 {
   "name": "commits-cli",
   "version": "1.0.0",
-  "description": "",
-  "main": "src/index.js",
+  "description": "This is a cli app that helps write better commit messages.",
   "type": "module",
+  "bin": {
+    "commits": "./src/bin.js"
+  },
+  "main": "./src/index.js",
   "scripts": {
     "start": "node src/index.js",
     "lint": "standard --fix",
+    "commits": "commits",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "devDependencies": {
+    "commits": "file://.",
+    "standard": "^17.0.0"
+  },
   "dependencies": {
     "@bdsqqq/try": "^2.3.1",
     "@clack/prompts": "0.6.1",
@@ -19,8 +27,5 @@
   },
   "eslintConfig": {
     "extends": "./node_modules/standard/eslintrc.json"
-  },
-  "devDependencies": {
-    "standard": "^17.0.0"
   }
 }
